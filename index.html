@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <!-- ── SEO / META ──────────────────────────────────────────────────── -->
+  <title>Am I Tripping?! — Get a verdict on your drama</title>
+  <meta name="description" content="Someone did you dirty. Or maybe you're the red flag. Spill the tea, pick your judge, get a verdict card built for the group chat. No account needed." />
+  <meta name="theme-color" content="#121212" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Am I Tripping?! — Get a verdict on your drama" />
+  <meta property="og:description" content="Someone did you dirty. Or maybe you're the red flag. Spill the tea, pick your judge, get a verdict card built for the group chat. No account needed." />
+  <meta property="og:image" content="assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Am I Tripping?! — Get a verdict on your drama" />
+  <meta name="twitter:description" content="Twelve judges. Real verdicts. Zero chill." />
+  <meta name="twitter:image" content="assets/og-image.png" />
+
+  <!-- Favicon (from the app icon) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png" />
+  <link rel="apple-touch-icon" href="assets/icon-180.png" />
+
+  <!-- ── FONTS (Instrument Serif for display, system sans for body) ────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       ZONE 1 — HERO (three-part split)
+       ══════════════════════════════════════════════════════════════════ -->
+  <section class="hero" id="hero">
+
+    <!-- LEFT: the verdict stack (cards fly here from the chat) -->
+    <div class="stack-col">
+      <div class="verdict-stack" id="verdictStack" aria-hidden="true"></div>
+    </div>
+
+    <!-- CENTER: the living, looping consult -->
+    <div class="chat-col">
+      <div class="chat-header" id="chatHeader" aria-hidden="true">
+        <span class="chat-header-avatar" id="chatHeaderAvatar"></span>
+        <span class="chat-header-name" id="chatHeaderName"></span>
+      </div>
+      <div class="chat" id="chat" aria-label="A looping demo consultation" role="img"></div>
+      <div class="chat-hint">A looping demo — the real thing happens in the app.</div>
+    </div>
+
+    <!-- RIGHT: the conversion panel (card-in-card: media card inset in a dark frame) -->
+    <aside class="convert-panel">
+      <div class="convert-media">
+        <div class="brand-row">
+          <img class="brand-icon" src="assets/icon-192.png" alt="Am I Tripping app icon" width="44" height="44" />
+          <img class="brand-wordmark" src="assets/wordmark.svg" alt="Am I Tripping?!" />
+        </div>
+        <h1 class="headline" id="headline">Is he being toxic?<br />Or are you overreacting?</h1>
+      </div>
+      <div class="convert-body">
+        <div class="meta-row">
+          <p class="subline">Twelve judges. Real verdicts. Zero chill.</p>
+          <span class="ios-badge" title="Available on iPhone only">
+            <svg viewBox="0 0 384 512" width="11" height="11" aria-hidden="true"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+            iOS exclusive
+          </span>
+        </div>
+
+        <div class="cta-group" id="ctaGroup">
+          <!-- buttons injected from config.js by script.js -->
+        </div>
+
+        <p class="trust">No account. No feed. Nobody sees your case but you.</p>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       ZONE 2 — JUDGES CAROUSEL (coverflow)
+       ══════════════════════════════════════════════════════════════════ -->
+  <section class="judges" id="judges" aria-label="The twelve judges">
+    <div class="judges-head">
+      <h2 class="judges-title">Meet the bench.</h2>
+      <p class="judges-sub">Twelve parties. Pick who reads your case.</p>
+    </div>
+
+    <div class="judges-frame">
+      <div class="coverflow" id="coverflow">
+        <button class="cf-arrow cf-prev" id="cfPrev" aria-label="Previous judge">&#8249;</button>
+        <div class="cf-track" id="cfTrack" tabindex="0" role="listbox" aria-label="Judges carousel">
+          <!-- judge cards injected by script.js -->
+        </div>
+        <button class="cf-arrow cf-next" id="cfNext" aria-label="Next judge">&#8250;</button>
+      </div>
+      <div class="cf-dots" id="cfDots" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       ZONE 3 — FOOTER
+       ══════════════════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer-left">&copy; 2026 Tripping App. All rights reserved.</div>
+    <nav class="footer-links" aria-label="Footer">
+      <a class="pill" href="https://ab25ek.github.io/tripping-support/" target="_blank" rel="noopener">Privacy Policy</a>
+      <a class="pill" href="https://ab25ek.github.io/tripping-support/" target="_blank" rel="noopener">Support</a>
+      <a class="pill" href="https://instagram.com/amitripping.app" target="_blank" rel="noopener">Instagram</a>
+    </nav>
+  </footer>
+
+  <!-- ── Tally waitlist modal (only used while APP_STORE_URL is empty) ─── -->
+  <div class="tally-modal" id="tallyModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Join the waitlist">
+    <div class="tally-backdrop" data-close></div>
+    <div class="tally-sheet">
+      <button class="tally-close" data-close aria-label="Close">&times;</button>
+      <div class="tally-embed" id="tallyEmbed"></div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

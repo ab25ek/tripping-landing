@@ -1,0 +1,799 @@
+/* ============================================================================
+   TRIPPING — LANDING PAGE STYLES
+   Visual identity mirrors the iOS app: never pure black, surface card-in-card
+   language, brand purple gradient, Instrument Serif for display type.
+   ============================================================================ */
+
+:root {
+  /* palette (from the app) */
+  --bg:          #121212;
+  --surface:     #171717;
+  --surface-2:   #1c1c1f;
+  --surface-3:   #202024;
+  --stroke:      #58585C;
+  --stroke-soft: rgba(255,255,255,0.09);
+  --purple:      #8801FF;
+  --purple-hi:   #8800FF;
+  --purple-lo:   #520099;
+  --purple-deep: #1C0338;
+  --accent:      #A855FF;
+  --text:        #F4F3F6;
+  --text-2:      #98979F;
+  --orange:      #FF7300;
+  --gold:        #FFD24A;
+
+  /* concentric radii (scaled from app 37/28/9) */
+  --r-frame: 34px;
+  --r-inner: 26px;
+  --r-chip:  11px;
+
+  --font-serif: "Instrument Serif", "Times New Roman", Georgia, serif;
+  --font-sans:  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --maxw: 1240px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; }
+
+/* ============================================================================
+   ZONE 1 — HERO
+   ============================================================================ */
+.hero {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  min-height: 100vh;   /* fallback for browsers without svh */
+  min-height: 100svh;
+  padding: 28px 24px 40px;
+  display: grid;
+  grid-template-columns: 0.92fr 1.16fr 0.92fr;
+  gap: 22px;
+  align-items: stretch;
+}
+
+/* ── LEFT: verdict stack ─────────────────────────────────────────────── */
+.stack-col {
+  position: relative;
+  border-radius: var(--r-frame);
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(136,1,255,0.05), transparent 60%),
+    var(--surface);
+  border: 1px solid var(--stroke-soft);
+  overflow: hidden;
+  min-height: 420px;
+}
+.verdict-stack {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* each card in the pile is absolutely stacked; offsets set inline by JS
+   (desktop: newest at top, older cards condensing into a deck at the bottom) */
+.verdict-stack .vcard {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(74%, 300px);
+  transition: transform .55s cubic-bezier(.22,1,.36,1), opacity .5s ease;
+  will-change: transform, opacity;
+}
+
+/* ── CENTER: chat ────────────────────────────────────────────────────── */
+.chat-col {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100svh - 68px);   /* hard cap: the loop can't extend the page */
+  overflow: hidden;
+  border-radius: var(--r-frame);
+  background:
+    radial-gradient(100% 70% at 50% 120%, rgba(136,1,255,0.06), transparent 55%),
+    var(--surface);
+  border: 1px solid var(--stroke-soft);
+  padding: 22px 20px 16px;
+  overflow: hidden;
+  position: relative;
+}
+/* who you're consulting — card-in-card header, like a real chat */
+.chat-header {
+  flex: 0 0 auto;
+  border-radius: var(--r-inner);
+  background: linear-gradient(180deg, #2e2e33, #232327);
+  border: 1px solid var(--stroke-soft);
+  padding: 26px 18px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 10px;
+  transition: opacity .4s ease;
+}
+.chat-header-avatar {
+  width: 96px; height: 96px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: grid; place-items: center;
+  background: linear-gradient(180deg, var(--purple-hi), var(--purple-lo));
+  color: #fff;
+  font-family: var(--font-serif);
+  font-size: 38px;
+  border: 2px solid rgba(255,255,255,.14);
+}
+.chat-header-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.chat-header-name {
+  font-family: var(--font-serif);
+  font-size: 27px;
+  line-height: 1;
+  color: var(--text);
+}
+
+.chat {
+  flex: 1 1 auto;
+  min-height: 0;               /* let it shrink inside the capped column */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;   /* newest anchored at the bottom... */
+  gap: 10px;
+  overflow: hidden;            /* ...old bubbles clip at the top — the column
+                                  NEVER grows the page */
+}
+.chat-hint {
+  text-align: center;
+  color: var(--text-2);
+  font-size: 12px;
+  margin-top: 14px;
+  opacity: .7;
+}
+
+/* bubbles */
+.bubble-row { display: flex; flex-direction: column; max-width: 82%; }
+.bubble-row.judge { align-self: flex-start; align-items: flex-start; }
+.bubble-row.user  { align-self: flex-end;   align-items: flex-end; }
+
+.speaker {
+  display: flex; align-items: center; gap: 7px;
+  margin: 2px 0 5px 4px;
+  color: var(--text-2);
+  font-size: 12px;
+  letter-spacing: .02em;
+}
+.mono {
+  width: 22px; height: 22px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 10px; font-weight: 700; color: #fff;
+  letter-spacing: 0;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+.mono img { width: 100%; height: 100%; object-fit: cover; }
+
+.bubble {
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-size: 15px;
+  line-height: 1.38;
+  animation: bubbleIn .32s cubic-bezier(.22,1,.36,1) both;
+}
+.bubble-row.judge .bubble {
+  background: var(--surface-2);
+  border: 1px solid var(--stroke-soft);
+  border-top-left-radius: 6px;
+  color: var(--text);
+}
+.bubble-row.user .bubble {
+  background: linear-gradient(180deg, var(--purple-hi), var(--purple-lo));
+  border-top-right-radius: 6px;
+  color: #fff;
+}
+@keyframes bubbleIn {
+  from { opacity: 0; transform: translateY(8px) scale(.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* typing indicator */
+.typing { display: inline-flex; gap: 5px; padding: 13px 15px; }
+.typing span {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--text-2);
+  animation: typing 1.2s infinite ease-in-out;
+}
+.typing span:nth-child(2){ animation-delay: .18s; }
+.typing span:nth-child(3){ animation-delay: .36s; }
+@keyframes typing {
+  0%,60%,100% { opacity: .3; transform: translateY(0); }
+  30%         { opacity: 1;  transform: translateY(-3px); }
+}
+
+/* card materialising inside the chat before it flies to the stack */
+.chat-card-wrap {
+  align-self: center;
+  width: min(78%, 250px);
+  margin: 6px 0;
+  animation: cardPop .4s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes cardPop {
+  from { opacity: 0; transform: scale(.9) translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* the flying clone */
+.fly-clone {
+  position: fixed;
+  z-index: 60;
+  pointer-events: none;
+  transition: transform .72s cubic-bezier(.5,0,.2,1), opacity .72s ease;
+  will-change: transform, opacity;
+}
+
+/* ── RIGHT: conversion panel (card-in-card) ──────────────────────────── */
+.convert-panel {
+  border-radius: var(--r-frame);
+  padding: 10px;                    /* frame gutter -> inset media card */
+  background: var(--surface);
+  border: 1px solid var(--stroke-soft);
+  display: flex;
+  flex-direction: column;
+}
+.convert-media {
+  border-radius: var(--r-inner);
+  padding: 26px 24px 30px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(130% 100% at 15% 0%, #9a1cff 0%, var(--purple-hi) 34%, var(--purple-lo) 78%, var(--purple-deep) 116%);
+}
+/* subtle noise + inner glow on the gradient surface */
+.convert-media::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: radial-gradient(120% 70% at 50% -10%, rgba(255,255,255,.22), transparent 55%);
+  pointer-events: none;
+}
+.convert-media::after {
+  content: "";
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/></svg>");
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.convert-media > * { position: relative; z-index: 1; }
+
+.brand-row { display: flex; align-items: center; gap: 11px; margin-bottom: 24px; }
+.brand-icon { width: 44px; height: 44px; border-radius: 12px; }
+.brand-wordmark { height: 22px; width: auto; filter: brightness(0) invert(1); }
+
+.headline {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(29px, 2.9vw, 40px);
+  line-height: 1.08;
+  letter-spacing: .005em;
+  margin: auto 0 6px;
+  color: #fff;
+  min-height: 2.3em;          /* two lines reserved — no jump between messages */
+  transition: opacity .45s ease;
+}
+.headline.is-swapping { opacity: 0; }
+
+.convert-body {
+  padding: 20px 14px 12px;
+  display: flex;
+  flex-direction: column;
+}
+.meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.subline {
+  font-family: var(--font-serif);
+  font-size: clamp(17px, 1.5vw, 20px);
+  color: var(--text-2);
+  margin: 0;
+  text-align: left;
+}
+.ios-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--stroke-soft);
+  color: var(--text-2);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.cta-group { display: flex; flex-direction: column; gap: 10px; }
+.cta {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 700;
+  padding: 17px 22px;
+  border-radius: 999px;            /* fully rounded, everywhere */
+  text-align: center;
+  text-decoration: none;
+  transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+}
+.cta-primary {
+  position: relative;
+  overflow: hidden;
+  /* warm sunset gradient (the verdict-card orange/gold family) so it pops
+     out of the surrounding purple; slowly drifts to stay eye-catching */
+  background: linear-gradient(100deg, #FF6A00, #FF2D6F 32%, #FFAE1F 64%, #FF6A00);
+  background-size: 260% 100%;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(120,20,0,.32);
+  box-shadow: 0 10px 30px rgba(255,110,0,.42), 0 2px 8px rgba(255,45,111,.3);
+  animation: ctaDrift 7s ease-in-out infinite;
+}
+/* periodic gloss sweep for extra highlight */
+.cta-primary::after {
+  content: "";
+  position: absolute; top: 0; left: -60%;
+  width: 45%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.45), transparent);
+  transform: skewX(-18deg);
+  animation: ctaSheen 7s ease-in-out infinite;
+}
+.cta-primary:hover { transform: translateY(-2px); filter: brightness(1.06) saturate(1.05); }
+@keyframes ctaDrift {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+@keyframes ctaSheen {
+  0%, 22%  { left: -60%; }
+  40%, 100% { left: 130%; }
+}
+.cta-secondary {
+  background: var(--surface-2);
+  border: 1px solid var(--stroke-soft);
+  color: var(--text);
+}
+.cta-secondary:hover { transform: translateY(-2px); background: var(--surface-3); }
+
+.trust {
+  margin: 14px 0 0;
+  font-size: 12.5px;
+  color: var(--text-2);
+  text-align: center;
+}
+
+/* ============================================================================
+   ZONE 2 — JUDGES COVERFLOW
+   ============================================================================ */
+.judges {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 40px 24px 30px;
+}
+.judges-head { text-align: center; margin-bottom: 10px; }
+.judges-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(30px, 4vw, 46px);
+  margin: 0;
+}
+.judges-sub { color: var(--text-2); margin: 6px 0 0; font-size: 15px; }
+
+/* rounded surface container, matching the hero zone cards */
+.judges-frame {
+  margin-top: 18px;
+  border-radius: var(--r-frame);
+  background:
+    radial-gradient(120% 90% at 50% 110%, rgba(136,1,255,0.05), transparent 60%),
+    var(--surface);
+  border: 1px solid var(--stroke-soft);
+  padding: 10px 0 18px;
+  overflow: hidden;
+}
+
+.coverflow {
+  position: relative;
+  height: 440px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1600px;
+  overflow: hidden;
+}
+.cf-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  outline: none;
+}
+.jcard {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 250px;
+  height: 380px;
+  margin: -190px 0 0 -125px;
+  border-radius: 22px;
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  border: 1px solid var(--stroke-soft);
+  box-shadow: 0 20px 50px rgba(0,0,0,.5);
+  transition: transform .5s cubic-bezier(.22,1,.36,1), opacity .5s ease, filter .5s ease;
+  will-change: transform, opacity;
+  overflow: hidden;
+  -webkit-user-select: none; user-select: none;
+}
+/* drop-in art (assets/judges/<id>.jpg) — set by script.js when the file exists */
+.jcard.has-art {
+  background-size: cover !important;
+  background-position: center top !important;
+}
+.jcard.has-art .jglyph { visibility: hidden; }   /* keeps layout, hides monogram */
+.jcard.has-art::before {                          /* bottom scrim for legibility */
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 38%, rgba(10,6,18,.42) 62%, rgba(10,6,18,.88) 100%);
+  pointer-events: none;
+}
+.jcard::after {   /* noise */
+  content: ""; position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/></svg>");
+  mix-blend-mode: overlay; pointer-events: none;
+}
+.jcard > * { position: relative; z-index: 1; }
+.jcard .tier {
+  align-self: flex-start;
+  font-size: 11px; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 5px 10px; border-radius: 8px;
+  background: rgba(0,0,0,.28);
+  color: rgba(255,255,255,.92);
+}
+.jcard .jglyph {
+  margin: auto auto 4px;
+  font-family: var(--font-serif);
+  font-size: 64px; line-height: 1;
+  color: rgba(255,255,255,.32);
+}
+.jcard .jname {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 30px; line-height: 1.02;
+  color: #fff;
+  margin: 0 0 4px;
+}
+.jcard .jname::after {
+  content: ""; display: block; height: 1px; width: 56px;
+  background: rgba(255,255,255,.4); margin: 9px 0 0;
+}
+.jcard .jhook {
+  font-size: 13.5px; line-height: 1.4;
+  color: rgba(255,255,255,.82);
+  margin: 9px 0 0;
+}
+.jcard.is-active { cursor: default; }
+
+.cf-arrow {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  z-index: 20;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--stroke-soft);
+  background: rgba(28,28,31,.7);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 24px; line-height: 1;
+  cursor: pointer;
+  display: grid; place-items: center;
+  transition: background .2s ease, transform .15s ease;
+}
+.cf-arrow:hover { background: rgba(136,1,255,.5); }
+.cf-arrow:active { transform: translateY(-50%) scale(.94); }
+.cf-prev { left: 6px; }
+.cf-next { right: 6px; }
+
+.cf-dots { display: flex; justify-content: center; gap: 7px; margin-top: 6px; flex-wrap: wrap; }
+.cf-dots button {
+  width: 8px; height: 8px; padding: 0; border: none; border-radius: 50%;
+  background: rgba(255,255,255,.22); cursor: pointer; transition: background .2s, transform .2s;
+}
+.cf-dots button.on { background: var(--accent); transform: scale(1.25); }
+
+/* ============================================================================
+   VERDICT CARD (used in stack + chat)
+   ============================================================================ */
+.vcard {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--r-frame);
+  padding: 6px;
+  background: var(--surface);
+  border: 1.5px solid var(--stroke);
+  box-shadow: 0 26px 60px rgba(0,0,0,.55);
+  overflow: hidden;
+}
+.vcard-frame {
+  height: 100%;
+  border-radius: var(--r-inner);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+}
+.vcard-face {
+  flex: 1 1 auto;
+  position: relative;
+  padding: 12px 13px 10px;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  overflow: hidden;
+  border-radius: var(--r-inner) var(--r-inner) 0 0;
+}
+/* sentiment bleeds */
+.vcard--mixed .vcard-face {
+  background: linear-gradient(163deg, #9a1cff -14%, var(--purple-hi) 30%, var(--purple-lo) 90%, #3d0073 118%);
+}
+.vcard--tripping .vcard-face {
+  background: linear-gradient(163deg, var(--orange) -16%, #b23a86 26%, var(--purple-hi) 62%, var(--purple-lo) 106%);
+}
+.vcard--nottripping .vcard-face {
+  background: linear-gradient(163deg, var(--gold) -14%, #ff8a1f 12%, #b03aa0 52%, var(--purple-hi) 84%, var(--purple-lo) 118%);
+}
+/* white inner glow + noise */
+.vcard-face::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(120% 80% at 50% -10%, rgba(255,255,255,.28), transparent 55%);
+  pointer-events: none;
+}
+.vcard-face::after {
+  content: ""; position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/></svg>");
+  mix-blend-mode: overlay; pointer-events: none;
+}
+.vcard-face > * { position: relative; z-index: 1; }
+
+.vcard-seals { display: flex; justify-content: space-between; align-items: center; }
+.seal {
+  width: 30px; height: 30px; border-radius: 50%;
+  overflow: hidden;
+  border: 1.5px solid rgba(255,255,255,.55);
+  display: grid; place-items: center;
+  background: rgba(0,0,0,.25);
+  font-size: 12px; font-weight: 700; color: #fff;
+}
+.seal img { width: 100%; height: 100%; object-fit: cover; }
+
+.vcard-attr {
+  text-align: center;
+  margin: 8px 0 6px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  color: rgba(255,255,255,.94);
+  line-height: 1.5;
+}
+.vcard-attr span { color: rgba(255,255,255,.66); font-weight: 600; }
+
+.vcard-quote {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  text-align: center;
+  font-size: clamp(15px, 2.1cqw, 22px);
+  line-height: 1.12;
+  margin: 2px 6px 8px;
+}
+.vcard-summary {
+  text-align: center;
+  font-size: 9.5px;
+  line-height: 1.35;
+  color: rgba(255,255,255,.92);
+  margin: 0 4px 8px;
+}
+.vcard-detail { margin-top: auto; padding-top: 2px; }
+.vcard-label {
+  text-align: center;
+  font-size: 8px; font-weight: 700; letter-spacing: .13em;
+  color: rgba(255,255,255,.72);
+  margin-bottom: 2px;
+}
+.vcard-text {
+  text-align: center;
+  font-size: 9.5px; line-height: 1.32;
+  color: rgba(255,255,255,.96);
+  margin-bottom: 7px;
+}
+
+/* chin */
+.vcard-chin {
+  flex: 0 0 auto;
+  background: var(--surface);
+  padding: 11px 13px 12px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-row-gap: 8px;
+  align-items: center;
+}
+.vcard-wordmark { height: 12px; width: auto; filter: brightness(0) invert(1); opacity: .34; }
+.vcard-chin-tr { justify-self: end; text-align: right; display: flex; align-items: center; gap: 6px; }
+.vcard-glyph {
+  width: 18px; height: 18px; border-radius: 5px;
+  border: 1px solid rgba(255,255,255,.2);
+  display: grid; place-items: center; font-size: 10px;
+  color: rgba(255,255,255,.5);
+}
+.stamp-date {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 7px; line-height: 1.4;
+  color: rgba(255,255,255,.5);
+  letter-spacing: .02em;
+}
+.barcode-row { display: flex; align-items: center; gap: 8px; }
+.barcode {
+  height: 20px; width: 68px;
+  background: repeating-linear-gradient(90deg,
+    rgba(255,255,255,.72) 0 1px, transparent 1px 3px,
+    rgba(255,255,255,.72) 3px 5px, transparent 5px 6px,
+    rgba(255,255,255,.72) 6px 7px, transparent 7px 10px,
+    rgba(255,255,255,.72) 10px 12px, transparent 12px 13px);
+  border-radius: 1px;
+}
+.case {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 8px; letter-spacing: .08em;
+  color: rgba(255,255,255,.55);
+}
+.sentiment {
+  justify-self: end;
+  font-size: 9px; font-weight: 800; letter-spacing: .1em;
+}
+.vcard--mixed .sentiment { color: rgba(255,255,255,.82); }
+.vcard--tripping .sentiment { color: var(--orange); }
+.vcard--nottripping .sentiment { color: var(--gold); }
+
+/* ============================================================================
+   ZONE 3 — FOOTER
+   ============================================================================ */
+.footer {
+  max-width: var(--maxw);
+  margin: 20px auto 0;
+  padding: 28px 30px 40px;
+  border-top: 1px solid var(--stroke-soft);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.footer-left { color: var(--text-2); font-size: 13.5px; }
+.footer-links { display: flex; gap: 10px; flex-wrap: wrap; }
+.pill {
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--stroke-soft);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 13.5px;
+  transition: background .2s ease, transform .15s ease;
+}
+.pill:hover { background: var(--surface-3); transform: translateY(-1px); }
+
+/* ============================================================================
+   TALLY MODAL
+   ============================================================================ */
+.tally-modal { position: fixed; inset: 0; z-index: 100; display: none; }
+.tally-modal.open { display: block; }
+.tally-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.72);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  animation: fadeIn .25s ease;
+}
+.tally-sheet {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%,-50%);
+  width: min(520px, 92vw);
+  height: min(640px, 88vh);
+  background: var(--surface);
+  border: 1px solid var(--stroke-soft);
+  border-radius: 24px;
+  overflow: hidden;
+  animation: sheetIn .3s cubic-bezier(.22,1,.36,1);
+}
+.tally-close {
+  position: absolute; top: 12px; right: 14px; z-index: 3;
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--stroke-soft);
+  background: rgba(0,0,0,.4); color: #fff;
+  font-size: 22px; line-height: 1; cursor: pointer;
+}
+.tally-embed { width: 100%; height: 100%; }
+.tally-embed iframe { width: 100%; height: 100%; border: 0; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sheetIn { from { opacity: 0; transform: translate(-50%,-46%) scale(.97); } to { opacity: 1; transform: translate(-50%,-50%) scale(1); } }
+
+/* ============================================================================
+   RESPONSIVE — mobile is the primary audience
+   ============================================================================ */
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    gap: 16px;
+    padding: 18px 14px 24px;
+  }
+  .chat-col       { order: 1; }
+  .convert-panel  { order: 2; }
+  .stack-col      { order: 3; min-height: 260px; }
+
+  /* fixed height on mobile — the playing consult never resizes the page */
+  .chat-col { padding: 18px 16px 14px; height: min(680px, 82svh); }
+
+  /* stack becomes a horizontal peek strip on mobile */
+  .stack-col { min-height: 230px; }
+  .verdict-stack { flex-direction: row; }
+  .stack-col.is-horizontal .verdict-stack .vcard { width: min(52%, 210px); }
+
+  .coverflow { height: 400px; }
+}
+
+@media (max-width: 560px) {
+  .headline { font-size: clamp(27px, 8vw, 34px); }
+  .convert-media { padding: 22px 18px 26px; }
+  .convert-body { padding: 16px 8px 8px; }
+  .jcard { width: 220px; height: 340px; margin: -170px 0 0 -110px; }
+  .footer { justify-content: center; text-align: center; }
+  .footer-left { width: 100%; text-align: center; }
+  .footer-links { justify-content: center; }
+  .coverflow { height: 380px; }
+}
+
+/* container query unit fallback for the quote scaling */
+.vcard { container-type: inline-size; }
+
+/* ============================================================================
+   REDUCED MOTION — no fly, no bubble motion, crossfade only
+   ============================================================================ */
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto; }
+  .bubble, .chat-card-wrap, .cardPop { animation: none !important; }
+  .bubble { opacity: 1 !important; transform: none !important; }
+  .fly-clone { transition: opacity .4s ease !important; }
+  .verdict-stack .vcard { transition: opacity .4s ease !important; }
+  .typing span { animation: none; opacity: .55; }
+  .jcard { transition: opacity .3s ease !important; }
+  .cta-primary { animation: none !important; background-position: 30% 50%; }
+  .cta-primary::after { display: none; }
+  .headline { transition: none !important; }
+}
