@@ -97,7 +97,8 @@ img { max-width: 100%; display: block; }
 .chat-col {
   display: flex;
   flex-direction: column;
-  max-height: calc(100svh - 68px);   /* hard cap: the loop can't extend the page */
+  max-height: calc(100vh - 68px);    /* hard cap: the loop can't extend the page */
+  max-height: calc(100svh - 68px);   /* (svh where supported) */
   overflow: hidden;
   border-radius: var(--r-frame);
   background:
@@ -204,8 +205,14 @@ img { max-width: 100%; display: block; }
   to   { opacity: 1; transform: none; }
 }
 
-/* typing indicator */
-.typing { display: inline-flex; gap: 5px; padding: 13px 15px; }
+/* typing indicator — sits in a judge-style bubble like a real chat */
+.typing {
+  display: inline-flex; gap: 5px; padding: 13px 15px;
+  background: var(--surface-2);
+  border: 1px solid var(--stroke-soft);
+  border-radius: 18px;
+  border-top-left-radius: 6px;
+}
 .typing span {
   width: 7px; height: 7px; border-radius: 50%;
   background: var(--text-2);
@@ -230,12 +237,12 @@ img { max-width: 100%; display: block; }
   to   { opacity: 1; transform: none; }
 }
 
-/* the flying clone */
+/* the flying clone — absolute (page coords), so scrolling mid-flight
+   doesn't desync the landing spot from the stack */
 .fly-clone {
-  position: fixed;
+  position: absolute;
   z-index: 60;
   pointer-events: none;
-  transition: transform .72s cubic-bezier(.5,0,.2,1), opacity .72s ease;
   will-change: transform, opacity;
 }
 
@@ -354,13 +361,13 @@ img { max-width: 100%; display: block; }
   box-shadow: 0 10px 30px rgba(255,110,0,.42), 0 2px 8px rgba(255,45,111,.3);
   animation: ctaDrift 7s ease-in-out infinite;
 }
-/* periodic gloss sweep for extra highlight */
+/* periodic gloss sweep for extra highlight (transform-only: no layout work) */
 .cta-primary::after {
   content: "";
-  position: absolute; top: 0; left: -60%;
+  position: absolute; top: 0; left: 0;
   width: 45%; height: 100%;
   background: linear-gradient(100deg, transparent, rgba(255,255,255,.45), transparent);
-  transform: skewX(-18deg);
+  transform: translateX(-160%) skewX(-18deg);
   animation: ctaSheen 7s ease-in-out infinite;
 }
 .cta-primary:hover { transform: translateY(-2px); filter: brightness(1.06) saturate(1.05); }
@@ -369,8 +376,8 @@ img { max-width: 100%; display: block; }
   50%      { background-position: 100% 50%; }
 }
 @keyframes ctaSheen {
-  0%, 22%  { left: -60%; }
-  40%, 100% { left: 130%; }
+  0%, 22%   { transform: translateX(-160%) skewX(-18deg); }
+  40%, 100% { transform: translateX(400%) skewX(-18deg); }
 }
 .cta-secondary {
   background: var(--surface-2);
@@ -758,7 +765,7 @@ img { max-width: 100%; display: block; }
   .stack-col      { order: 3; min-height: 260px; }
 
   /* fixed height on mobile — the playing consult never resizes the page */
-  .chat-col { padding: 18px 16px 14px; height: min(680px, 82svh); }
+  .chat-col { padding: 18px 16px 14px; height: min(680px, 82vh); height: min(680px, 82svh); }
 
   /* stack becomes a horizontal peek strip on mobile */
   .stack-col { min-height: 230px; }
@@ -787,7 +794,7 @@ img { max-width: 100%; display: block; }
    ============================================================================ */
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto; }
-  .bubble, .chat-card-wrap, .cardPop { animation: none !important; }
+  .bubble, .chat-card-wrap { animation: none !important; }
   .bubble { opacity: 1 !important; transform: none !important; }
   .fly-clone { transition: opacity .4s ease !important; }
   .verdict-stack .vcard { transition: opacity .4s ease !important; }

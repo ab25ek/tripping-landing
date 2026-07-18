@@ -353,10 +353,11 @@
       }
 
       // 2. clone flies from chat position to the stack target
+      //    (page coordinates — immune to scrolling during the flight)
       const clone = chatCardEl.cloneNode(true);
       clone.className = "vcard vcard--" + consult.card.sclass + " fly-clone";
-      clone.style.left = start.left + "px";
-      clone.style.top = start.top + "px";
+      clone.style.left = start.left + window.scrollX + "px";
+      clone.style.top = start.top + window.scrollY + "px";
       clone.style.width = start.width + "px";
       clone.style.height = start.height + "px";
       document.body.appendChild(clone);
