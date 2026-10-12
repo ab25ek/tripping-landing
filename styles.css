@@ -379,6 +379,21 @@ img { max-width: 100%; display: block; }
   0%, 22%   { transform: translateX(-160%) skewX(-18deg); }
   40%, 100% { transform: translateX(400%) skewX(-18deg); }
 }
+/* official App Store badge — artwork is never recoloured, animated or
+   cropped (Apple badge guidelines); only the link itself lifts on hover.
+   56px tall clears Apple's 40px minimum; group gap gives the 1/4-height
+   clear space. */
+.cta-store {
+  align-self: center;
+  display: inline-block;
+  line-height: 0;
+  border-radius: 12px;
+  transition: transform .15s ease;
+}
+.cta-store img { height: 56px; width: auto; }
+.cta-store:hover { transform: translateY(-2px); }
+.cta-store:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
 .cta-secondary {
   background: var(--surface-2);
   border: 1px solid var(--stroke-soft);

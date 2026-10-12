@@ -21,15 +21,18 @@
     const group = document.getElementById("ctaGroup");
     group.innerHTML = "";
 
-    // PRIMARY
+    // PRIMARY — live: Apple's official badge (unmodified artwork, per Apple's
+    // badge guidelines); pre-launch: the orange waitlist pill
     const primary = document.createElement(CFG.APP_STORE_URL ? "a" : "button");
-    primary.className = "cta cta-primary";
     if (CFG.APP_STORE_URL) {
-      primary.textContent = "Get the app";
+      primary.className = "cta-store";
       primary.href = CFG.APP_STORE_URL;
       primary.target = "_blank";
       primary.rel = "noopener";
+      primary.innerHTML =
+        '<img src="assets/app-store-badge.svg" alt="Download on the App Store" width="168" height="56">';
     } else {
+      primary.className = "cta cta-primary";
       primary.textContent = "Waitlist now";
       primary.type = "button";
       primary.addEventListener("click", openWaitlist);

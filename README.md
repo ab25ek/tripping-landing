@@ -27,8 +27,9 @@ no framework, no backend, no build step. Open `index.html` and it runs.
 Everything about the buttons is driven from three constants at the top of `config.js`:
 
 ```js
-APP_STORE_URL: ""   // empty  -> primary button = "Waitlist now" (opens Tally)
-                    // set    -> primary button = "Get the app" (links to App Store)
+APP_STORE_URL: "https://apps.apple.com/app/id6789317828"
+                    // set (LIVE) -> primary CTA = official "Download on the App Store" badge
+                    // empty      -> primary CTA = orange "Waitlist now" (opens Tally)
 
 BETA_URL: ""        // empty  -> the "Try the Beta" button does NOT render at all
                     // set    -> "Try the Beta" appears, linking to your TestFlight invite
@@ -36,8 +37,10 @@ BETA_URL: ""        // empty  -> the "Try the Beta" button does NOT render at al
 TALLY_FORM_URL: "https://tally.so/r/vG1Pol"   // the waitlist form (already set)
 ```
 
-- **On App Store launch:** paste your App Store product URL into `APP_STORE_URL`.
-  The primary button flips to "Get the app" automatically.
+- **The app is live:** `APP_STORE_URL` is set, so the CTA is Apple's official
+  badge (`assets/app-store-badge.svg`, US-UK black lockup, unmodified per Apple's
+  badge guidelines). The page also carries the iOS Smart App Banner
+  (`apple-itunes-app` meta), so iPhone Safari visitors get a native "Get" bar.
 - **When TestFlight external testing clears review:** paste the public invite link
   into `BETA_URL` and the "Try the Beta" button appears.
 - No other file needs to change.
@@ -129,7 +132,6 @@ gradient + monogram fallback (never broken).
 - **`assets/og-image.png`** — a branded 1200×630 placeholder is included so social
   shares don't look broken. Swap it for a designed share image when you have one
   (same filename, same dimensions — nothing else to change).
-- **App Store URL** — set `APP_STORE_URL` in `config.js` on launch day (see above).
 
 ## Notes
 

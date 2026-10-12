@@ -9,8 +9,8 @@
    HOW THE BUTTONS BEHAVE
    ----------------------------------------------------------------------------
    PRIMARY button:
-     • APP_STORE_URL is EMPTY  ->  label "Waitlist now"  ->  opens the Tally form
-     • APP_STORE_URL is SET    ->  label "Get the app"   ->  links to the App Store
+     • APP_STORE_URL is EMPTY  ->  orange "Waitlist now"  ->  opens the Tally form
+     • APP_STORE_URL is SET    ->  official App Store badge -> links to the app
 
    SECONDARY "Try the Beta" button:
      • BETA_URL is EMPTY  ->  button DOES NOT RENDER AT ALL (no dead buttons)
@@ -23,11 +23,11 @@
 
 const CONFIG = {
 
-  // ── FLIP ME ON LAUNCH DAY ──────────────────────────────────────────────
-  // Paste your App Store product URL here the moment the app is live.
-  // Leave as "" (empty string) until then.
-  //   e.g. "https://apps.apple.com/app/am-i-tripping/id0000000000"
-  APP_STORE_URL: "",
+  // ── LIVE ON THE APP STORE ─────────────────────────────────────────────
+  // Set = the primary CTA is the official "Download on the App Store" badge.
+  // Clear to "" to fall back to the orange "Waitlist now" button (Tally).
+  // The id-only link auto-redirects each visitor to their own storefront.
+  APP_STORE_URL: "https://apps.apple.com/app/id6789317828",
 
   // ── FLIP ME WHEN TESTFLIGHT EXTERNAL TESTING CLEARS REVIEW ─────────────
   // Paste your public TestFlight invite link here.
